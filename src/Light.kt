@@ -1,2 +1,1 @@
-class Light {
-}
+class Light(var type:Int,var intensity:Double,var dirpos:Vector)
