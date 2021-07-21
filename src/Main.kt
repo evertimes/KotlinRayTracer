@@ -6,16 +6,16 @@ import javax.swing.JFrame
 
 const val SIZEX = 600;
 const val SIZEY = 600;
-val BACKGROUND_COLOR = Color.WHITE;
+val BACKGROUND_COLOR = Color.BLACK;
 
 class Canvas:JFrame(){
     init{
-        setTitle("myFrame")
+        setTitle("Raytracer")
         setSize(SIZEX, SIZEY)
         defaultCloseOperation = EXIT_ON_CLOSE
-        isVisible = true//now frame will be visible, by default not visible
+        isVisible = true
     }
-    var array = Array<Array<Color?>>(SIZEY, {arrayOfNulls<Color?>(SIZEX)})
+    var array = Array(SIZEY, {arrayOfNulls<Color?>(SIZEX)})
     override fun paint(g:Graphics?){
         for(i in 0..SIZEY-1) {
             for(j in 0..SIZEX-1) {
@@ -28,7 +28,7 @@ class Canvas:JFrame(){
         array[y][x]=color
     }
 }
-var O = Vector(0.0,0.0,0.0)
+var O = Vector(0.0,0.0,-2.0)
 var spheres = listOf(
         Sphere(Vector(0.0,-1.0,3.0),1.0,Color.RED),
         Sphere(Vector(2.0,0.0,4.0),1.0,Color.BLUE),
@@ -85,14 +85,14 @@ fun traceRay(O: Vector, D: Vector, t_min: Int, t_max: Int): Color {
     return Color(red,green,blue)
 }
 fun intersectRaySphere(O: Vector, D: Vector, sphere: Sphere): TPair {
-    var C = sphere.center;
-    var r = sphere.radius;
-    var OC = vctrSubs(O,C);
-    var k1 = vctrDot(D,D)
-    var k2 = 2*vctrDot(OC,D);
-    var k3 = vctrDot(OC,OC) - r*r;
+    val C = sphere.center;
+    val r = sphere.radius;
+    val OC = vctrSubs(O,C);
+    val k1 = vctrDot(D,D)
+    val k2 = 2*vctrDot(OC,D);
+    val k3 = vctrDot(OC,OC) - r*r;
 
-    var discriminant = k2*k2 - 4*k1*k3;
+    val discriminant = k2*k2 - 4*k1*k3;
     if(discriminant<0)
         return TPair(Int.MAX_VALUE.toDouble(), Int.MAX_VALUE.toDouble());
     return TPair(((k2*(-1)+sqrt(discriminant))/(2*k1)), ((k2*(-1)-sqrt(discriminant))/(2*k1)))
@@ -122,8 +122,8 @@ fun main() {
 
     for(i in -SIZEY/2 until SIZEY/2){
         for(j in -SIZEX/2 until SIZEX/2){
-            var D = canvasToViewPort(j,i);
-            var clr = traceRay(O,D,1, Int.MAX_VALUE);
+            val D = canvasToViewPort(j,i);
+            val clr = traceRay(O,D,1, Int.MAX_VALUE);
             f.putPixel(SIZEX/2+j,SIZEY/2-i-1,clr)
         }
     }
